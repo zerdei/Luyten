@@ -42,6 +42,7 @@ public class MainWindow extends JFrame {
 	private LuytenPreferences luytenPrefs;
 	private FileDialog fileDialog;
 	private FileSaver fileSaver;
+	private FileSaverDebugable fileSaverDebugable;
 
 	public MainWindow(File fileFromCommandLine) {
 		configSaver = ConfigSaver.getLoadedInstance();
@@ -98,6 +99,7 @@ public class MainWindow extends JFrame {
 
 		fileDialog = new FileDialog(this);
 		fileSaver = new FileSaver(bar, label);
+		fileSaverDebugable = new FileSaverDebugable(bar, label);
 
 		this.setExitOnEscWhenEnabled(model);
 
@@ -150,6 +152,27 @@ public class MainWindow extends JFrame {
 		File selectedFileToSave = fileDialog.doSaveAllDialog(fileName);
 		if (selectedFileToSave != null) {
 			fileSaver.saveAllDecompiled(openedFile, selectedFileToSave);
+		}
+	}
+
+	public void onSaveAllDebugableMenu() {
+		File openedFile = this.getModel().getOpenedFile();
+		if (openedFile == null)
+			return;
+		
+		String fileName = openedFile.getName();
+		if (fileName.endsWith(".class")) {
+			fileName = "debugable-" + fileName.replace(".class", ".jar");
+		} else if (fileName.toLowerCase().endsWith(".jar")) {
+			fileName = "debugable-" + fileName.replaceAll("\\.[jJ][aA][rR]", ".jar");
+		} else {
+			onSaveAllMenu();
+			return;
+		}
+
+		File selectedFileToSave = fileDialog.doSaveAllDialog(fileName);
+		if (selectedFileToSave != null) {
+			fileSaverDebugable.saveAllDebugable(openedFile, selectedFileToSave);
 		}
 	}
 

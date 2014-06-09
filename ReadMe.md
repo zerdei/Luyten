@@ -1,16 +1,18 @@
 Luyten
 ======
-Decompiler Gui for Procyon<br>
-[![Build Status](http://ci.modcrafting.com/view/Luyten/job/Luyten/badge/icon)](http://ci.modcrafting.com/view/Luyten/job/Luyten/)
+Decompiler Gui for Procyon<br><br>
 
-## Screenshot
-![Screen](http://puu.sh/3Ak9r.jpg)
 
-### Downloads
-[Releases](https://github.com/deathmarine/Luyten/releases)<br>
+### Debuginfo: Experimental branch
+Purpose of this new feature is to create debug info tables from scratch (based on decompiled data), and merge these back into the original .class files.<br><br>
 
-### Bugs/Suggestions
-[Issues](https://github.com/deathmarine/Luyten/issues)<br>
+This will enable debugers to place breakpoints and show variables, while running the untouched original binary code.<br><br>
+
+Usage: open a jar file like usual, then select File / Save All Debugable... menu.<br><br>
+
+The attached example consists of two parts, first part helps setup your development environment and creates a normal Android hello world .apk, the secon part shows the placement of decompiled artifacts of this .apk in order to run it in debug mode. (You have to use Maven and Eclipse for both projects.)<br><br>
+
+(Note: The debuginfo feature is far from ready, now it works, but can contain several unknown bugs and issues, and strongly tied to the current version of Procyon and Asm.)<br><br>
 
 
 ## Powered by 

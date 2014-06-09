@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
@@ -35,8 +36,8 @@ import com.strobel.decompiler.languages.java.JavaFormattingOptions;
  */
 public class FileSaver {
 
-	private JProgressBar bar;
-	private JLabel label;
+	protected JProgressBar bar;
+	protected JLabel label;
 
 	public FileSaver(JProgressBar bar, JLabel label) {
 		this.bar = bar;
@@ -47,12 +48,15 @@ public class FileSaver {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try (FileWriter fw = new FileWriter(file);
-						BufferedWriter bw = new BufferedWriter(fw);) {
+				try {
+					checkFileDoMkdirs(file);
 					label.setText("Extracting: " + file.getName());
 					bar.setVisible(true);
-					bw.write(text);
-					bw.flush();
+					try (FileWriter fw = new FileWriter(file);
+							BufferedWriter bw = new BufferedWriter(fw);) {
+						bw.write(text);
+						bw.flush();
+					}
 					label.setText("Complete");
 				} catch (Exception e1) {
 					label.setText("Cannot save file: " + file.getName());
@@ -70,6 +74,7 @@ public class FileSaver {
 			@Override
 			public void run() {
 				try {
+					checkFileDoMkdirs(outFile);
 					bar.setVisible(true);
 					label.setText("Extracting: " + outFile.getName());
 					String inFileName = inFile.getName().toLowerCase();
@@ -214,7 +219,7 @@ public class FileSaver {
 		}
 	}
 
-	private DecompilerSettings cloneSettings() {
+	protected DecompilerSettings cloneSettings() {
 		DecompilerSettings settings = ConfigSaver.getLoadedInstance().getDecompilerSettings();
 		DecompilerSettings newSettings = new DecompilerSettings();
 		if (newSettings.getFormattingOptions() == null) {
@@ -241,5 +246,17 @@ public class FileSaver {
 			newSettings.setShowDebugLineNumbers(settings.getShowDebugLineNumbers());
 		}
 		return newSettings;
+	}
+
+	protected void checkFileDoMkdirs(File outFile) throws IOException {
+		if (outFile.isDirectory())
+			throw new RuntimeException("Specified path is a directory: " + outFile.getCanonicalPath());
+		if (!outFile.exists()) {
+			File outDir = outFile.getCanonicalFile().getParentFile();
+			if (!outDir.exists())
+				outDir.mkdirs();
+			if (!outDir.exists())
+				throw new RuntimeException("Cannot create directory: " + outDir.getCanonicalPath());
+		}
 	}
 }

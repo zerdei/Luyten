@@ -45,6 +45,7 @@ public class MainMenuBar extends JMenuBar {
 	private ButtonGroup themesGroup;
 	private JCheckBox packageExplorerStyle;
 	private JCheckBox filterOutInnerClassEntries;
+	private JCheckBox keepExistingVariableTablesWhenSaveDebugable;
 	private JCheckBox singleClickOpenEnabled;
 	private JCheckBox exitByEscEnabled;
 	private DecompilerSettings settings;
@@ -160,6 +161,15 @@ public class MainMenuBar extends JMenuBar {
 			}
 		});
 		fileMenu.add(menuItem);
+
+		menuItem = new JMenuItem("Save All Debugable...");
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainWindow.onSaveAllDebugableMenu();
+			}
+		});
+		fileMenu.add(menuItem);
 		fileMenu.addSeparator();
 
 		menuItem = new JMenuItem("Recent Files");
@@ -267,6 +277,20 @@ public class MainMenuBar extends JMenuBar {
 			}
 		});
 		operationMenu.add(filterOutInnerClassEntries);
+
+		keepExistingVariableTablesWhenSaveDebugable = new JCheckBox("Keep Existing Variable Tables When Save Debugable");
+		keepExistingVariableTablesWhenSaveDebugable.setSelected(
+				luytenPrefs.isKeepExistingVariableTablesWhenSaveDebugable());
+		keepExistingVariableTablesWhenSaveDebugable.setContentAreaFilled(false);
+		keepExistingVariableTablesWhenSaveDebugable.setFocusable(false);
+		keepExistingVariableTablesWhenSaveDebugable.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				luytenPrefs.setKeepExistingVariableTablesWhenSaveDebugable(
+						keepExistingVariableTablesWhenSaveDebugable.isSelected());
+			}
+		});
+		operationMenu.add(keepExistingVariableTablesWhenSaveDebugable);
 
 		singleClickOpenEnabled = new JCheckBox("Single Click Open");
 		singleClickOpenEnabled.setSelected(luytenPrefs.isSingleClickOpenEnabled());

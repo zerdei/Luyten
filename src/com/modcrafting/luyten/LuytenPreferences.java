@@ -20,6 +20,7 @@ public class LuytenPreferences {
 
 	private boolean isPackageExplorerStyle = true;
 	private boolean isFilterOutInnerClassEntries = true;
+	private boolean isKeepExistingVariableTablesWhenSaveDebugable = true;
 	private boolean isSingleClickOpenEnabled = true;
 	private boolean isExitByEscEnabled = false;
 
@@ -61,6 +62,14 @@ public class LuytenPreferences {
 
 	public void setFilterOutInnerClassEntries(boolean isFilterOutInnerClassEntries) {
 		this.isFilterOutInnerClassEntries = isFilterOutInnerClassEntries;
+	}
+
+	public boolean isKeepExistingVariableTablesWhenSaveDebugable() {
+		return isKeepExistingVariableTablesWhenSaveDebugable;
+	}
+
+	public void setKeepExistingVariableTablesWhenSaveDebugable(boolean isKeepExistingVariableTablesWhenSaveDebugable) {
+		this.isKeepExistingVariableTablesWhenSaveDebugable = isKeepExistingVariableTablesWhenSaveDebugable;
 	}
 
 	public boolean isSingleClickOpenEnabled() {
